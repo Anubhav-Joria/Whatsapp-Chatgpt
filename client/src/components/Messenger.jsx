@@ -3,22 +3,22 @@ import { AppBar, Toolbar, styled, Box } from "@mui/material";
 
 import { AccountContext } from "../context/AccountProvider";
 
-//components
+//StyledComponents
 import ChatDialog from "./chat/ChatDialog";
 import LoginDialog from "./account/LoginDialog";
 
-const Component = styled(Box)`
+const StyledComponent = styled(Box)`
   height: 100vh;
   background: #dcdcdc;
 `;
 
-const Header = styled(AppBar)`
+const StyledHeader = styled(AppBar)`
   background-color: #00a884;
   height: 125px;
   box-shadow: none;
 `;
 
-const LoginHeader = styled(AppBar)`
+const StyledLoginHeader = styled(AppBar)`
   background: #00bfa5;
   height: 200px;
   box-shadow: none;
@@ -28,23 +28,23 @@ const Messenger = () => {
   const { account } = useContext(AccountContext);
 
   return (
-    <Component>
+    <StyledComponent>
       {account ? (
         <>
-          <Header>
+          <StyledHeader>
             <Toolbar></Toolbar>
-          </Header>
+          </StyledHeader>
           <ChatDialog />
         </>
       ) : (
         <>
-          <LoginHeader>
+          <StyledLoginHeader>
             <Toolbar></Toolbar>
-          </LoginHeader>
+          </StyledLoginHeader>
           <LoginDialog />
         </>
       )}
-    </Component>
+    </StyledComponent>
   );
 };
 

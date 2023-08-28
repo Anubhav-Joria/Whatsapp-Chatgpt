@@ -3,7 +3,11 @@ import { Box, styled } from "@mui/material";
 
 import { io } from "socket.io-client";
 
-import { getMessages, newMessages } from "../../../service/api";
+import {
+  getMessages,
+  newMessages,
+  getReplyFromChatGPT,
+} from "../../../service/api";
 import { AccountContext } from "../../../context/AccountProvider";
 
 //components
@@ -24,12 +28,18 @@ const StyledFooter = styled(Box)`
 `;
 
 const Component = styled(Box)`
-  height: 80vh;
+  height: 70vh;
   overflow-y: scroll;
 `;
 
 const Container = styled(Box)`
   padding: 1px 80px;
+`;
+
+const StyledChatResponse = styled(Box)`
+  margin: 20px 20px 0px 20px;
+  padding: 0px 29px;
+  background: bisque;
 `;
 
 const Messages = ({ person, conversation }) => {
@@ -38,14 +48,21 @@ const Messages = ({ person, conversation }) => {
   const [value, setValue] = useState();
   const [file, setFile] = useState();
   const [image, setImage] = useState();
+  const [gptResponse, setGptResponse] = useState("");
 
   const scrollRef = useRef();
 
   const { account, socket, newMessageFlag, setNewMessageFlag } =
     useContext(AccountContext);
 
+  const sendToGPT = async (inputText) => {
+    const reply = await getReplyFromChatGPT(inputText);    
+      setGptResponse(reply);    
+  };
+
   useEffect(() => {
     socket.current.on("getMessage", (data) => {
+      sendToGPT(data.text);
       setIncomingMessage({
         ...data,
         createdAt: Date.now(),
@@ -72,7 +89,7 @@ const Messages = ({ person, conversation }) => {
   }, [incomingMessage, conversation]);
 
   const receiverId = conversation?.members?.find(
-    (member) => member !== account.sub,
+    (member) => member !== account.sub
   );
 
   const sendText = async (e) => {
@@ -120,6 +137,11 @@ const Messages = ({ person, conversation }) => {
             </Container>
           ))}
       </Component>
+      {gptResponse && (
+        <StyledChatResponse>
+          <p onClick={() => setValue(gptResponse)}>ChatGpt : {gptResponse}</p>
+        </StyledChatResponse>
+      )}
       <Footer
         sendText={sendText}
         value={value}

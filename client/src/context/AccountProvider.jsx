@@ -16,7 +16,65 @@ const AccountProvider = ({ children }) => {
 
   useEffect(() => {
     socket.current = io("ws://localhost:9000");
+
+    const persistedAccount = sessionStorage.getItem("account");
+    const persistedShowLoginButton = sessionStorage.getItem("showloginButton");
+    const persistedShowLogoutButton = sessionStorage.getItem("showlogoutButton");
+    const persistedActiveUsers = sessionStorage.getItem("activeUsers");
+    const persistedNewMessageFlag = sessionStorage.getItem("newMessageFlag");
+    // Load other persisted data similarly...
+
+    if (persistedAccount) {
+      try {
+        setAccount(JSON.parse(persistedAccount));
+      } catch (error) {
+        console.error("Error parsing persisted account:", error);
+      }
+      
+    }
+    if (persistedShowLoginButton) {
+      try {
+        setShowloginButton(JSON.parse(persistedShowLoginButton));
+      } catch (error) {
+        console.error("Error parsing persisted account:", error);
+      }
+      
+    }
+    if (persistedShowLogoutButton) {
+      try {
+        setShowlogoutButton(JSON.parse(persistedShowLogoutButton));
+      } catch (error) {
+        console.error("Error parsing persisted account:", error);
+      }
+      
+    }
+    if (persistedActiveUsers) {
+      try {
+        setShowlogoutButton(JSON.parse(persistedActiveUsers));
+      } catch (error) {
+        console.error("Error parsing persisted account:", error);
+      }
+    }
+    if (persistedNewMessageFlag) {
+      try {
+        setShowlogoutButton(JSON.parse(persistedNewMessageFlag));
+      } catch (error) {
+        console.error("Error parsing persisted account:", error);
+      }
+    }
+    // Set other persisted data similarly...
   }, []);
+
+    // Save data to sessionStorage whenever it changes
+    useEffect(() => {
+      sessionStorage.setItem("account", JSON.stringify(account));
+      sessionStorage.setItem("showloginButton", JSON.stringify(showloginButton));
+      sessionStorage.setItem("showlogoutButton", JSON.stringify(showlogoutButton));
+      sessionStorage.setItem("activeUsers", JSON.stringify(activeUsers));
+      sessionStorage.setItem("newMessageFlag", JSON.stringify(newMessageFlag));
+      // Save other data similarly...
+    }, [account, showloginButton, showlogoutButton, activeUsers, newMessageFlag]);
+  
 
   return (
     <AccountContext.Provider

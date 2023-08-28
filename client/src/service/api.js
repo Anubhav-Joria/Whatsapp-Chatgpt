@@ -61,3 +61,36 @@ export const uploadFile = async (data) => {
     console.log("Error while calling newConversations API ", error);
   }
 };
+
+export const getReplyFromChatGPT = async (text) => {
+  const API_URL = "https://api.openai.com/v1/chat/completions";
+  const token = process.env.REACT_APP_CHATGPT_KEY;
+  const requestBody = {
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: "You are a helpful assistant.",
+      },
+      {
+        role: "user",
+        content: text,
+      },
+    ],
+  };
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+  try {
+    //Chat gpt API call
+    //  const response = await axios.post(API_URL, requestBody, { headers });
+    // return response?.data?.choices[0]?.message?.content;
+
+    //Dummy API call
+    const response = await axios.get(`${url}/gpt/reply`);
+    return response.data?.text;
+  } catch (error) {
+    console.log("Error while calling newConversations API ", error);
+  }
+};
