@@ -28,7 +28,7 @@ const StyledFooter = styled(Box)`
 `;
 
 const Component = styled(Box)`
-  height: 70vh;
+  height: 80vh;
   overflow-y: scroll;
 `;
 
@@ -49,6 +49,7 @@ const Messages = ({ person, conversation }) => {
   const [file, setFile] = useState();
   const [image, setImage] = useState();
   const [gptResponse, setGptResponse] = useState("");
+  const [anotherResponse, setAnotherResponse] = useState("");
 
   const scrollRef = useRef();
 
@@ -57,7 +58,10 @@ const Messages = ({ person, conversation }) => {
 
   const sendToGPT = async (inputText) => {
     const reply = await getReplyFromChatGPT(inputText);    
-      setGptResponse(reply);    
+      setGptResponse(reply);   
+      const anotherReply = await getReplyFromChatGPT(inputText);    
+      setAnotherResponse(anotherReply);   
+
   };
 
   useEffect(() => {
@@ -136,12 +140,18 @@ const Messages = ({ person, conversation }) => {
               <Message message={message} />
             </Container>
           ))}
-      </Component>
-      {gptResponse && (
+          {gptResponse && (
         <StyledChatResponse>
           <p onClick={() => setValue(gptResponse)}>ChatGpt : {gptResponse}</p>
         </StyledChatResponse>
       )}
+      {anotherResponse && (
+        <StyledChatResponse>
+          <p onClick={() => setValue(anotherResponse)}>ChatGpt : {anotherResponse}</p>
+        </StyledChatResponse>
+      )}
+      </Component>
+      
       <Footer
         sendText={sendText}
         value={value}

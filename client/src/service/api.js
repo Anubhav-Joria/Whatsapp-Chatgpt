@@ -89,7 +89,7 @@ export const getReplyFromChatGPT = async (text) => {
 
     //Dummy API call
     const response = await axios.get(`${url}/gpt/reply`);
-    return response.data?.text;
+   return response.data?.text;
   } catch (error) {
     console.log("Error while calling newConversations API ", error);
   }

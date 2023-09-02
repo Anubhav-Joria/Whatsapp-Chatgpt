@@ -42,6 +42,14 @@ const HeaderMenu = () => {
   const handleClose = () => {
     setOpen(null);
   };
+  const handleLogout = () => {
+    sessionStorage.clear()
+    setTimeout(() => {
+      window.location.reload()
+    }, 500);
+    
+
+  };
 
   const onSignoutSuccess = () => {
     alert("You have been logged out successfully");
@@ -81,6 +89,14 @@ const HeaderMenu = () => {
           }}
         >
           Profile
+        </MenuOption>
+        <MenuOption
+          onClick={() => {
+            handleLogout();
+           
+          }}
+        >
+          Logout
         </MenuOption>
         <MenuOption
           onClick={() => {
